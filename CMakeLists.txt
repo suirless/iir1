@@ -18,9 +18,6 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.1.0")
 endif()
 
 include(GNUInstallDirs)
-add_subdirectory(test)
-add_subdirectory(demo)
-enable_testing ()
 
 if (MSVC)
   add_compile_options(/W4)
