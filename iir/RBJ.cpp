@@ -220,7 +220,36 @@ void AllPass::setup (double sampleRate,
 	double a2 =  1 - AL;
 	setCoefficients (a0, a1, a2, b0, b1, b2);
 }
-	
+
+
+void Bell::setup(double sampleRate,
+	double centerFrequency,
+	double gainDb,
+	double Q)
+{
+	const double K = std::tan(3.1415926535897932384626433832795 * (centerFrequency / sampleRate));
+	const double K2 = K * K;
+	const double V = std::exp(std::abs(gainDb) * (1.0 / 20.0) * 2.3025850929940456840179914546844 /* log10 */);
+
+	if (gainDb >= 0) { 
+		const double norm = 1 / (1 + 1 / Q * K + K2);
+		const double a0 = (1 + V / Q * K + K2) * norm;
+		const double a1 = 2 * (K2 - 1) * norm;
+		const double a2 = (1 - V / Q * K + K2) * norm;
+		const double b1 = a1;
+		const double b2 = (1 - 1 / Q * K + K2) * norm;
+		setCoefficients(a0, a1, a2, 1.0, b1, b2);
+	} else {
+		const double norm = 1 / (1 + V / Q * K + K2);
+		const double a0 = (1 + 1 / Q * K + K2) * norm;
+		const double a1 = 2 * (K2 - 1) * norm;
+		const double a2 = (1 - 1 / Q * K + K2) * norm;
+		const double b1 = a1;
+		const double b2 = (1 - V / Q * K + K2) * norm;
+		setCoefficients(a0, a1, a2, 1.0, b1, b2);
+	}
+}
+
 }
 
 }

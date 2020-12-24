@@ -249,6 +249,13 @@ namespace RBJ {
 			    double q);
 	};
 	
+	struct DllExport Bell : RBJbase
+	{
+		void setup(double sampleRate,
+			double centerFrequency,
+			double gainDb,
+			double Q);
+	};
 }
 
 }
